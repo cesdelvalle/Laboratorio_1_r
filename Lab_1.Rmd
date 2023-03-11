@@ -1,0 +1,113 @@
+#1. Vectores y matrices
+```{r}
+S1 <- c(50.4, 62.3, 92.1, 77.6, TRUE)
+S2 <- c(41.7, 87.9, 75.3, 72.4, FALSE)
+S3 <- c(30.3, 67.8, 69.3, 71.2, FALSE)
+S4 <- c(65.4, 85.1, 92.3, 96.8, TRUE)
+S5 <- c(70.4, 88.2, 95.2, 90.7, TRUE)
+
+students_vector <- c(S1, S2, S3, S4, S5)
+
+students_matrix <- matrix(students_vector, nrow=5, byrow=TRUE)
+
+```
+#2. Nombrado de una matriz
+```{r}
+name_students <- c("Lily Brown", "Davis Moore", "Susan Taylor", "Mike Jones", "Tom Hill")
+name_courses_legal_age <- c("TIC", "Accounting", "Psychology", "Ethics", "Legal_age")
+
+rownames(students_matrix) <- name_students
+colnames(students_matrix) <- name_courses_legal_age
+
+students_matrix
+
+```
+
+#3. rowSums, cbind
+```{r}
+
+total_grade_student <- rowSums(students_matrix[, 1:4])
+result_students <- cbind(students_matrix, total_grade_student)
+result_students
+
+```
+
+#4. Seleccionando elementos de una matriz
+
+
+```{r}
+
+selected_elements <- result_students[c(1, 3, 5), c(2, 4)]
+
+selected_elements
+
+```
+
+#5. Data frames
+
+
+
+```{r}
+
+students_grades_df <- as.data.frame(result_students)
+
+filtered_df <- subset(students_grades_df, Accounting > 80 & Legal_age == TRUE, select = c(Accounting, Legal_age))
+
+filtered_df
+```
+
+
+#6. Funciones, Condicionales y Bucles
+
+
+```{r}
+
+students_projection <- function(x) {
+ 
+  n_rows <- nrow(x)
+  n_cols <- ncol(x)
+  
+  for (i in 1:n_rows) {
+    for (j in 1:(n_cols-1)) { 
+      grade <- x[i,j]
+      if (grade <= 45) {
+        print("Student at risk")
+      } else if (grade > 45 & grade < 61) {
+        print("Student may be approved")
+      } else {
+        print("Student approved")
+      }
+    }
+  }
+}
+
+
+students_projection(result_students)
+
+```
+
+#7. Data frames y lapply
+
+```{r}
+
+index_education <- function(grade) {
+  index <- (1 + (grade/100))/2
+  return(index)
+}
+
+all_students_grade <- students_grades_df[, 1:4]
+
+index_education_results <- lapply(all_students_grade, index_education)
+
+index_education_results
+
+```
+#8. Math utilities
+
+```{r}
+score_mean <- rowMeans(students_grades_df[,1:4])
+
+score_mean
+
+```
+
